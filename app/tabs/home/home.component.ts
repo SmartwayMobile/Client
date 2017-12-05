@@ -37,6 +37,7 @@ import { OpenDataService } from "../services/open-data.service";
 export class HomeComponent {
     private map: MapboxViewApi;
     private mapReady: boolean;
+    private incidents: any[];
 
     constructor(private openDataService: OpenDataService) { }
 
@@ -54,17 +55,20 @@ export class HomeComponent {
             .then(res => {
                 const markers = res
                     .filter(i => !!i.locations[0].midPoint)
-                    .map(i => {
+                    .map((i, index) => {
                         const { lng, lat } = i.locations[0].midPoint;
                         return {
+                            id: 'Incident' + index,
+                            index,
                             lat,
                             lng,
-                            title: i.impactDescription,
-                            subtitle: i.description,
-                            onCalloutTap: function () { console.log('tapped!') }
+                            // title: i.impactDescription,
+                            // subtitle: i.description,
+                            onTap: function (marker) { console.log('tapped!', marker) }
                         }
                     });
-                map.addMarkers(markers);
+                this.incidents = markers;
+                map.addMarkers(this.incidents);
             });
     }
 }
