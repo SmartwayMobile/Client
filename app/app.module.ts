@@ -7,6 +7,7 @@ import { NativeScriptUISideDrawerModule } from "nativescript-pro-ui/sidedrawer/a
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
+import { ModalViewComponent } from "./tabs/browse/modal-view";
 import { AuthGuard } from "./guards/auth.guard";
 
 
@@ -32,8 +33,10 @@ firebase.init({
     ],
     declarations: [
         AppComponent,
-        LoginComponent
+        LoginComponent,
+        ModalViewComponent
     ],
+    entryComponents: [ModalViewComponent],
     providers: [
         AuthGuard,
         { provide: NgModuleFactoryLoader, useClass: NSModuleFactoryLoader }
