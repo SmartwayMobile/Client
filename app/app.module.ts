@@ -3,12 +3,11 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { NSModuleFactoryLoader } from "nativescript-angular/router";
 
 import { NativeScriptUISideDrawerModule } from "nativescript-pro-ui/sidedrawer/angular";
-import { AngularFireModule } from "angularfire2";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
-import { AuthGuard } from "./guards/auth.guard"; 
+import { AuthGuard } from "./guards/auth.guard";
 
 @NgModule({
     bootstrap: [
