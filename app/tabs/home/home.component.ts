@@ -6,6 +6,14 @@ import {
     animate,
     transition
 } from "@angular/animations";
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle
+} from 'nativescript-cfalert-dialog';
 import { MapboxViewApi, Viewport as MapboxViewport, Mapbox } from "nativescript-mapbox";
 import { OpenDataService } from "../services/open-data.service";
 
@@ -38,6 +46,7 @@ export class HomeComponent {
     private map: MapboxViewApi;
     private mapReady: boolean;
     private incidents: any[];
+    private cfalertDialog = new CFAlertDialog();
 
     constructor(private openDataService: OpenDataService) { }
 
@@ -62,13 +71,32 @@ export class HomeComponent {
                             index,
                             lat,
                             lng,
-                            // title: i.impactDescription,
-                            // subtitle: i.description,
-                            onTap: function (marker) { console.log('tapped!', marker) }
+                            impactDescription: i.impactDescription,
+                            description: i.description,
+                            onTap: (marker) => this.onMarkerTap(marker)
                         }
                     });
                 this.incidents = markers;
                 map.addMarkers(this.incidents);
             });
+    }
+
+    onMarkerTap(marker): void {
+        const options: DialogOptions = {
+            dialogStyle: CFAlertStyle.BOTTOM_SHEET,
+            title: marker.impactDescription,
+            titleColor: "#4781FE",
+            message: marker.description,
+            buttons: [{
+                text: "Dismiss",
+                textColor: "#FFFFFF",
+                backgroundColor: "#4781FE",
+                buttonStyle: CFAlertActionStyle.POSITIVE,
+                onClick: function (name) { console.log(name) }
+            }],
+            cancellable: true
+        }
+
+        this.cfalertDialog.show(options);
     }
 }
