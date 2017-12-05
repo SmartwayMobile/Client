@@ -1,8 +1,10 @@
-<!--
-This is the component view that represents the 'Home' tab.
-Feel free to customize layouts and components to change how the tab view looks.
--->
-<GridLayout class="page page-content" tkMainContent>
-    <Label class="page-icon fa" text="&#xf015;"></Label>
-    <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
+<GridLayout class="main-content">
+    <Gradient height="100%" direction="to bottom" colors="#444, #000" [class.p-20]="isIOS">
+        <ContentView [@flyInOut]="'in'" height="100%" width="100%">
+            <Mapbox accessToken="sk.eyJ1IjoiZWRkeXZlcmJydWdnZW4iLCJhIjoia1JpRW82NCJ9.OgnvpsKzB3GJhzyofQNUBw" mapStyle="traffic_day" latitude="35.5175"
+                longitude="-86.5804" zoomLevel="5" delay="450" showUserLocation="true" hideCompass="false" disableZoom="false"
+                disableRotation="false" disableScroll="false" disableTilt="false" (mapReady)="onMapReady($event)">
+            </Mapbox>
+        </ContentView>
+    </Gradient>
 </GridLayout>

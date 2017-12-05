@@ -9,6 +9,9 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { AuthGuard } from "./guards/auth.guard";
 
+import { registerElement } from "nativescript-angular/element-registry";
+registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
+registerElement("FAB", () => require("nativescript-floatingactionbutton").Fab);
 
 import firebase = require("nativescript-plugin-firebase");
 firebase.init({
