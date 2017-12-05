@@ -9,6 +9,18 @@ import { AppComponent } from "./app.component";
 import { LoginComponent } from "./login/login.component";
 import { AuthGuard } from "./guards/auth.guard";
 
+
+import firebase = require("nativescript-plugin-firebase");
+firebase.init({
+    //persist: true
+}).then(
+    (instance) => {
+        console.log("firebase.init done");
+    },
+    (error) => {
+        console.log("firebase.init error: " + error);
+    });
+
 @NgModule({
     bootstrap: [
         AppComponent
