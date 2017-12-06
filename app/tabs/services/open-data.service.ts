@@ -6,9 +6,9 @@ import "rxjs/add/operator/toPromise";
 
 @Injectable()
 export class OpenDataService {
-    private incidentsUrl = "https://dev.tdot.tn.gov/opendata/api/public/roadwayincidentsdev";
-    private constructionUrl = "https://dev.tdot.tn.gov/opendata/api/public/roadwayoperationsdev";
-    private cameraUrl = "https://dev.tdot.tn.gov/opendata/api/public/roadwaycameras";
+    private incidentsUrl = "https://www.tdot.tn.gov/opendata/api/public/roadwayincidents";
+    private constructionUrl = "https://www.tdot.tn.gov/opendata/api/public/Roadwayoperations";
+    private cameraUrl = "https://www.tdot.tn.gov/opendata/api/public/Roadwaycameras";
 
     constructor(private http: Http) { }
 
@@ -32,7 +32,7 @@ export class OpenDataService {
 
     private createRequestHeader(): Headers {
         let headers = new Headers();
-        headers.append("apiKey", "this-is-awesome");
+        headers.append("apiKey", "1a4de36de3bf4c9fac288f937ff7c0ce");
         headers.append("Content-Type", "application/json");
 
         return headers;

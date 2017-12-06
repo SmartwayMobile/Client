@@ -1,4 +1,4 @@
-import { Component, ViewContainerRef } from "@angular/core";
+import { Component, ViewContainerRef, OnInit } from "@angular/core";
 import {
     trigger,
     state,
@@ -16,6 +16,7 @@ import {
 } from 'nativescript-cfalert-dialog';
 import { MapboxViewApi, Viewport as MapboxViewport, Mapbox, MapboxApi } from "nativescript-mapbox";
 import { OpenDataService } from "../services/open-data.service";
+import { GeometryService } from "../services/geometry.service";
 
 @Component({
     selector: "Home",
@@ -42,29 +43,49 @@ import { OpenDataService } from "../services/open-data.service";
         ])
     ]
 })
-export class HomeComponent {
+export class HomeComponent implements OnInit {
     private map: MapboxViewApi;
     private mapReady: boolean;
     private incidents: any[];
     private construction: any[];
     private cfalertDialog = new CFAlertDialog();
+    private userRoutes: any[];
+    private boundingBox: { north: number, south: number, east: number, west: number };
+    private hasSetBoundingBox = false;
 
-    constructor(private openDataService: OpenDataService) { }
+    constructor(private openDataService: OpenDataService, private geoService: GeometryService) { }
+
+    ngOnInit(): void {
+        this.getUserRoutes().then(routes => {
+            this.boundingBox = this.geoService.getBoundsFromCoords(routes);
+            if (this.mapReady && this.map) {
+                this.setMapBounds(this.boundingBox);
+            }
+        });
+    }
+
+    // TODO: Replace with real data plzzz kthxbye
+    getUserRoutes(): Promise<{ lat: number, lng: number }[]> {
+        const DUMMY_DATA = [{ lng: 35.8456, lat: -86.3903 }, { lng: 36.1627, lat: -86.7816 }];
+        return Promise.resolve(DUMMY_DATA);
+    }
 
     onMapReady(args): void {
         if (this.mapReady) return;
 
         this.map = args.map;
         this.mapReady = true;
-        console.log('map ready! getting incidents...');
-        //this.getIncidents(args.map);
+        this.getIncidents(args.map);
         this.getConstruction(args.map);
+        if (!this.hasSetBoundingBox && this.boundingBox) {
+            this.setMapBounds(this.boundingBox);
+        }
     }
 
     getIncidents(map: MapboxViewApi) {
         this.openDataService.getIncidents()
             .then(res => {
-                this.incidents = this.mapResponseToMarkers(res, "Roadway Incident");
+                this.incidents = this.mapResponseToMarkers(res, "Roadway Incident", "res://tabIcons/incident.png");
                 map.addMarkers(this.incidents);
             });
     }
@@ -72,12 +93,17 @@ export class HomeComponent {
     getConstruction(map: MapboxApi) {
         this.openDataService.getConstruction()
             .then(res => {
-                this.construction = this.mapResponseToMarkers(res, "Construction");
+                this.construction = this.mapResponseToMarkers(res, "Construction", "res://tabIcons/construction.png");
                 map.addMarkers(this.construction);
             });
     }
 
-    private mapResponseToMarkers(indcidents: any[], title: string): any[] {
+    private setMapBounds(bounds: { north: number, south: number, east: number, west: number }) {
+        this.map.setViewport({ bounds });
+        this.hasSetBoundingBox = true;
+    }
+
+    private mapResponseToMarkers(indcidents: any[], title: string, iconPath: string): any[] {
         return indcidents
             .filter(i => !!i.locations[0].midPoint)
             .map((i, index) => {
@@ -87,6 +113,7 @@ export class HomeComponent {
                     index,
                     lat,
                     lng,
+                    iconPath,
                     impactDescription: title,
                     description: i.description,
                     onTap: (marker) => this.onMarkerTap(marker)
@@ -95,7 +122,6 @@ export class HomeComponent {
     }
 
     private onMarkerTap(marker): void {
-        console.log(marker);
         const options: DialogOptions = {
             dialogStyle: CFAlertStyle.BOTTOM_SHEET,
             title: marker.impactDescription,

@@ -8,6 +8,7 @@ import { SearchComponent } from "./search/search.component";
 import { TabsRoutingModule } from "./tabs-routing.module";
 import { TabsComponent } from "./tabs.component";
 import { OpenDataService } from "./services/open-data.service";
+import { GeometryService } from "./services/geometry.service";
 
 @NgModule({
     imports: [
@@ -22,7 +23,8 @@ import { OpenDataService } from "./services/open-data.service";
         SearchComponent
     ],
     providers: [
-        OpenDataService
+        OpenDataService,
+        GeometryService
     ],
     schemas: [
         NO_ERRORS_SCHEMA

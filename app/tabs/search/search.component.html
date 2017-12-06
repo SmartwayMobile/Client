@@ -2,7 +2,20 @@
 This is the component view that represents the 'Search' tab.
 Feel free to customize layouts and components to change how the tab view looks.
 -->
-<GridLayout class="page page-content" tkMainContent>
-    <Label class="page-icon fa" text="&#xf002;"></Label>
-    <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
+<GridLayout class="page page-content" tkMainContent rows="250, *">
+    <StackLayout *ngIf="!!cameraSelected" row="0">
+        <VideoPlayer src="{{cameraSelected.httpVideoUrl}}" autoplay="true" height="250" controls="false"></VideoPlayer>
+        <!-- <Button text="Dismiss" (tap)="closeCamera()"></Button> -->
+    </StackLayout>
+    <ListView [items]="cameras" (itemTap)="onCameraSelect($event)" row="1">
+        <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
+            <GridLayout columns="60, *" class="camera-item">
+                <Image src="res://tabIcons/search.png" col="0" class="camera-image"></Image>
+                <StackLayout [class.odd]="odd" [class.even]="even" col="1">
+                    <Label class="h3" [text]='item.route'></Label>
+                    <Label class="h5" [text]='item.title'></Label>
+                </StackLayout>
+            </GridLayout>
+        </ng-template>
+    </ListView>
 </GridLayout>
