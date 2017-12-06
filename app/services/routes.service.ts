@@ -17,7 +17,6 @@ export class RoutesService {
     const onQueryEvent = (result) => {
       // note that the query returns 1 match at a time
       // in the order specified in the query
-      //
 
       if (!result.error) {
         const [id] = Object.keys(result.value);
