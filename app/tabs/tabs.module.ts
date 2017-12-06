@@ -1,11 +1,8 @@
 import { NgModule, NO_ERRORS_SCHEMA } from "@angular/core";
 import { NativeScriptModule } from "nativescript-angular/nativescript.module";
-<<<<<<< HEAD
-import { NativeScriptHttpModule } from "nativescript-angular/http";
-=======
 import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { NativeScriptRouterModule } from "nativescript-angular/router";
->>>>>>> conner
+import { NativeScriptHttpModule } from "nativescript-angular/http";
 
 import { RouteListComponent } from "./route-list/route-list.component";
 import { CreateRouteComponent } from "./create-route/create-route.component";
@@ -19,14 +16,10 @@ import { GeometryService } from "./services/geometry.service";
 @NgModule({
     imports: [
         NativeScriptModule,
-<<<<<<< HEAD
-        TabsRoutingModule,
-        NativeScriptHttpModule
-=======
         NativeScriptFormsModule,
+        NativeScriptHttpModule,
         NativeScriptRouterModule,
         TabsRoutingModule
->>>>>>> conner
     ],
     declarations: [
         TabsComponent,
