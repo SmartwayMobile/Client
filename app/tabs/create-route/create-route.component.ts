@@ -9,6 +9,8 @@ import { Page } from "ui/page";
 import { ModalDialogService, ModalDialogOptions } from "nativescript-angular/modal-dialog";
 import { ModalViewComponent } from "./modal-view";
 import { Route } from '../../models/Route';
+import { AuthService } from "../../services/auth.service";
+import { RoutesService } from "../../services/routes.service";
 
 @Component({
   selector: "create-route",
@@ -22,10 +24,14 @@ export class CreateRouteComponent /*implements OnInit*/ {
   public selectedTime: string;
 
   constructor(
+    private routesService: RoutesService,
+    private authService: AuthService,
     private routerExtensions: RouterExtensions,
     private modalService: ModalDialogService,
     private vcRef: ViewContainerRef) {
     this.resetTimes();
+    console.log('in create route');
+    console.log(this.authService.userKey);
   }
 
   getStartTime() {
@@ -74,25 +80,24 @@ export class CreateRouteComponent /*implements OnInit*/ {
   }
 
   createRoute(): void {
+    this.routesService.routes.push(
+      {
+        'name': this.model.name,
+        'startAddress': this.getLatLng(this.model.startAddress),
+        'endAddress': this.getLatLng(this.model.endAddress),
+        'startTime': this.model.startTime.getTime(),
+        'endTime': this.model.endTime.getTime(),
+        'days': [0, 1, 2, 3, 4, 5, 6]
+      });
     const self = this;
     console.log(this.model.startAddress);
     console.log(this.model.endAddress);
     console.log(this.model.startTime);
     console.log(this.model.endTime);
-    firebase.push(
-      '/users',
+    firebase.update(
+      `/users/${this.authService.userKey}`,
       {
-        'name': 'conner',
-        'routes': [
-          {
-            'name': this.model.name,
-            'startAddress': this.getLatLng(this.model.startAddress),
-            'endAddress': this.getLatLng(this.model.endAddress),
-            'startTime': this.model.startTime.getTime(),
-            'endTime': this.model.endTime.getTime(),
-            'days': [0, 1, 2, 3, 4, 5, 6]
-          }
-        ]
+        'routes': this.routesService.routes
       }
     ).then(
       function (result) {

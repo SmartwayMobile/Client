@@ -13,6 +13,9 @@ import { TabsComponent } from "./tabs.component";
 import { OpenDataService } from "./services/open-data.service";
 import { GeometryService } from "./services/geometry.service";
 
+import { AuthService } from "../services/auth.service";
+import { RoutesService } from "../services/routes.service";
+
 @NgModule({
     imports: [
         NativeScriptModule,
@@ -30,7 +33,9 @@ import { GeometryService } from "./services/geometry.service";
     ],
     providers: [
         OpenDataService,
-        GeometryService
+        GeometryService,
+        AuthService,
+        RoutesService
     ],
     schemas: [
         NO_ERRORS_SCHEMA

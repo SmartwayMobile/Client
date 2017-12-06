@@ -1,25 +1,36 @@
 import { Injectable } from '@angular/core';
 import firebase = require("nativescript-plugin-firebase");
+import { AuthService } from './auth.service';
+import { Route } from '../models/Route';
 
 
 @Injectable()
-export class AuthService {
+export class RoutesService {
 
-  public userKey: string = '';
+  public routes: any[] = [];
 
-  constructor() {
-    this.setUserKey();
+  constructor(private authService: AuthService) {
+    this.getRoutes();
   }
-
-  setUserKey() {
+  getRoutes() {
+    let self = this;
     const onQueryEvent = (result) => {
       // note that the query returns 1 match at a time
       // in the order specified in the query
-      //
 
       if (!result.error) {
-        const [key] = Object.keys(result.value);
-        this.userKey = key;
+        const [id] = Object.keys(result.value);
+        console.log(id);
+        result.value[id].routes.forEach(r => {
+          let route = new Route();
+          route.name = r.name;
+          route.endAddress = r.endAddress;
+          route.endTime = r.endTime;
+          route.startAddress = r.startAddress;
+          route.startTime = r.startTime;
+          this.routes.push(route);
+        });
+        //console.log(JSON.stringify(this.routes));
       }
     };
     firebase.query(
@@ -47,14 +58,10 @@ export class AuthService {
             type: firebase.QueryRangeType.EQUAL_TO,
             value: 'conner'
           }
-        ],
-        // only the first 2 matches
-        // (note that there's only 1 in this case anyway)
-        // limit: {
-        //   type: firebase.QueryLimitType.LAST,
-        //   value: 2
-        // }
+        ]
       }
     );
+
   }
+
 }
