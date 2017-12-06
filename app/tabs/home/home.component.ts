@@ -14,7 +14,7 @@ import {
     CFAlertActionStyle,
     CFAlertStyle
 } from 'nativescript-cfalert-dialog';
-import { MapboxViewApi, Viewport as MapboxViewport, Mapbox } from "nativescript-mapbox";
+import { MapboxViewApi, Viewport as MapboxViewport, Mapbox, MapboxApi } from "nativescript-mapbox";
 import { OpenDataService } from "../services/open-data.service";
 
 @Component({
@@ -46,6 +46,7 @@ export class HomeComponent {
     private map: MapboxViewApi;
     private mapReady: boolean;
     private incidents: any[];
+    private construction: any[];
     private cfalertDialog = new CFAlertDialog();
 
     constructor(private openDataService: OpenDataService) { }
@@ -62,26 +63,41 @@ export class HomeComponent {
     getIncidents(map: MapboxViewApi) {
         this.openDataService.getIncidents()
             .then(res => {
-                const markers = res
-                    .filter(i => !!i.locations[0].midPoint)
-                    .map((i, index) => {
-                        const { lng, lat } = i.locations[0].midPoint;
-                        return {
-                            id: 'Incident' + index,
-                            index,
-                            lat,
-                            lng,
-                            impactDescription: i.impactDescription,
-                            description: i.description,
-                            onTap: (marker) => this.onMarkerTap(marker)
-                        }
-                    });
-                this.incidents = markers;
+                this.incidents = this.mapToIncidentMarkers(res);
                 map.addMarkers(this.incidents);
             });
     }
 
-    onMarkerTap(marker): void {
+    getConstruction(map: MapboxApi) {
+        this.openDataService.getConstruction()
+            .then(res => {
+                this.construction = this.mapToConstructionMarkers(res);
+                map.addMarkers(this.construction);
+            })
+    }
+
+    private mapToConstructionMarkers(construction: any[]): any[] {
+        return construction;
+    }
+
+    private mapToIncidentMarkers(indcidents: any[]): any[] {
+        return indcidents
+            .filter(i => !!i.locations[0].midPoint)
+            .map((i, index) => {
+                const { lng, lat } = i.locations[0].midPoint;
+                return {
+                    id: 'Incident' + index,
+                    index,
+                    lat,
+                    lng,
+                    impactDescription: i.impactDescription,
+                    description: i.description,
+                    onTap: (marker) => this.onMarkerTap(marker)
+                }
+            });
+    }
+
+    private onMarkerTap(marker): void {
         const options: DialogOptions = {
             dialogStyle: CFAlertStyle.BOTTOM_SHEET,
             title: marker.impactDescription,
