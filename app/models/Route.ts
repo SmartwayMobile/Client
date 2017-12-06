@@ -4,4 +4,5 @@ export class Route {
   public endAddress: string;
   public startTime: Date;
   public endTime: Date;
+  public days: number[];
 }

@@ -10,6 +10,9 @@ import { SearchComponent } from "./search/search.component";
 import { TabsRoutingModule } from "./tabs-routing.module";
 import { TabsComponent } from "./tabs.component";
 
+import { AuthService } from "../services/auth.service";
+import { RoutesService } from "../services/routes.service";
+
 @NgModule({
     imports: [
         NativeScriptModule,
@@ -23,6 +26,10 @@ import { TabsComponent } from "./tabs.component";
         RouteListComponent,
         CreateRouteComponent,
         SearchComponent
+    ],
+    providers: [
+        AuthService,
+        RoutesService
     ],
     schemas: [
         NO_ERRORS_SCHEMA
