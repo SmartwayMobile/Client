@@ -57,13 +57,14 @@ export class HomeComponent {
         this.map = args.map;
         this.mapReady = true;
         console.log('map ready! getting incidents...');
-        this.getIncidents(args.map);
+        //this.getIncidents(args.map);
+        this.getConstruction(args.map);
     }
 
     getIncidents(map: MapboxViewApi) {
         this.openDataService.getIncidents()
             .then(res => {
-                this.incidents = this.mapToIncidentMarkers(res);
+                this.incidents = this.mapResponseToMarkers(res, "Roadway Incident");
                 map.addMarkers(this.incidents);
             });
     }
@@ -71,16 +72,12 @@ export class HomeComponent {
     getConstruction(map: MapboxApi) {
         this.openDataService.getConstruction()
             .then(res => {
-                this.construction = this.mapToConstructionMarkers(res);
+                this.construction = this.mapResponseToMarkers(res, "Construction");
                 map.addMarkers(this.construction);
-            })
+            });
     }
 
-    private mapToConstructionMarkers(construction: any[]): any[] {
-        return construction;
-    }
-
-    private mapToIncidentMarkers(indcidents: any[]): any[] {
+    private mapResponseToMarkers(indcidents: any[], title: string): any[] {
         return indcidents
             .filter(i => !!i.locations[0].midPoint)
             .map((i, index) => {
@@ -90,7 +87,7 @@ export class HomeComponent {
                     index,
                     lat,
                     lng,
-                    impactDescription: i.impactDescription,
+                    impactDescription: title,
                     description: i.description,
                     onTap: (marker) => this.onMarkerTap(marker)
                 }
@@ -98,6 +95,7 @@ export class HomeComponent {
     }
 
     private onMarkerTap(marker): void {
+        console.log(marker);
         const options: DialogOptions = {
             dialogStyle: CFAlertStyle.BOTTOM_SHEET,
             title: marker.impactDescription,
@@ -108,7 +106,7 @@ export class HomeComponent {
                 textColor: "#FFFFFF",
                 backgroundColor: "#4781FE",
                 buttonStyle: CFAlertActionStyle.POSITIVE,
-                onClick: function (name) { console.log(name) }
+                onClick: function (name) { }
             }],
             cancellable: true
         }

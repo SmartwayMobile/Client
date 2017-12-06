@@ -21,8 +21,6 @@
     "@angular/http": "4.2.5",
     "@angular/platform-browser": "4.2.5",
     "@angular/router": "4.2.5",
-    "@turf/boolean-point-in-polygon": "^5.0.4",
-    "@types/turf": "^3.5.32",
     "nativescript-angular": "4.2.0",
     "nativescript-cfalert-dialog": "^1.0.5",
     "nativescript-mapbox": "^3.1.3",

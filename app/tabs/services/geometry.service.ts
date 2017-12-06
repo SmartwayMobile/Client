@@ -1,6 +1,5 @@
 import { Injectable } from "@angular/core";
 import { bbox, lineString, bboxPolygon } from 'turf';
-import booleanPointInPolygon from '@turf/boolean-point-in-polygon';
 
 @Injectable()
 export class GeometryService {
@@ -24,7 +23,11 @@ export class GeometryService {
     }
 
     private isPointInBounds(bounds: { north: number, south: number, east: number, west: number }, point: number[]) {
-        const box = bboxPolygon([bounds.south, bounds.west, bounds.east, bounds.west]);
-        return booleanPointInPolygon(point, box);
+        const [pointLat, pointLng] = point;
+        return (
+            pointLat >= bounds.south &&
+            pointLat <= bounds.north &&
+            pointLng >= bounds.west &&
+            pointLat <= bounds.east);
     }
 }

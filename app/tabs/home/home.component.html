@@ -1,8 +1,8 @@
 <GridLayout class="main-content">
     <Gradient height="100%" direction="to bottom" colors="#444, #000" [class.p-20]="isIOS">
         <ContentView [@flyInOut]="'in'" height="100%" width="100%">
-            <Mapbox accessToken="sk.eyJ1IjoiZWRkeXZlcmJydWdnZW4iLCJhIjoia1JpRW82NCJ9.OgnvpsKzB3GJhzyofQNUBw" mapStyle="traffic_day" latitude="35.5175"
-                longitude="-86.5804" zoomLevel="5" showUserLocation="true" hideCompass="false" disableZoom="false" disableRotation="false"
+            <Mapbox accessToken="sk.eyJ1IjoiZWRkeXZlcmJydWdnZW4iLCJhIjoia1JpRW82NCJ9.OgnvpsKzB3GJhzyofQNUBw" mapStyle="streets" latitude="35.5175"
+                longitude="-86.5804" zoomLevel="8" showUserLocation="true" hideCompass="false" disableZoom="false" disableRotation="false"
                 disableScroll="false" disableTilt="false" (mapReady)="onMapReady($event)">
             </Mapbox>
         </ContentView>
