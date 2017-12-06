@@ -9,7 +9,7 @@ import { Page } from "ui/page";
   templateUrl: "./modal-view.html",
 })
 export class ModalViewComponent implements OnInit {
-  public currenttime: '';
+  public currenttime: Date;
 
   constructor(private params: ModalDialogParams, private page: Page) {
     this.currenttime = params.context;
@@ -23,8 +23,8 @@ export class ModalViewComponent implements OnInit {
 
   ngOnInit() {
     let timePicker: TimePicker = <TimePicker>this.page.getViewById<TimePicker>("timePicker");
-    timePicker.hour = parseInt(this.currenttime.split(':')[0]);
-    timePicker.minute = parseInt(this.currenttime.split(':')[1]);
+    timePicker.hour = this.currenttime.getHours();
+    timePicker.minute = this.currenttime.getMinutes();
   }
 
   public submit() {

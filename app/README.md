@@ -36,7 +36,7 @@ There is one main component that holds the tabs page:
 - `/tabs/tabs.component.ts` - sets up the tab navigation page layout and references the navigatable views contents via custom components.
 
 There are three blank custom components used for the tab views located in these folders:
-- `/tabs/browse`
+- `/tabs/create-route`
 - `/tabs/home`
 - `/tabs/search`
 
