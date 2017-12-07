@@ -9,7 +9,7 @@ export class GeometryService {
     getBoundsFromCoords(coords: { lat: number, lng: number }[]) {
         const coordsArray = coords.map(c => [c.lat, c.lng]);
         const line = lineString(coordsArray);
-        const [west, south, east, north] = bbox(line);
+        const [south, west, north, east] = bbox(line);
         return { north, south, east, west };
     }
 
@@ -19,9 +19,11 @@ export class GeometryService {
         items: any[],
         routes: { lat: number, lng: number }[],
         coordSelector?: (item: any) => number[]): any[] {
+        console.log('filtering cameras');
         return items.filter(i => {
             i = !!coordSelector ? coordSelector(i) : i;
-            return this.isPointNearLine(routes, i);
+            const bounds = this.getBoundsFromCoords(routes);
+            return this.isPointInBounds(bounds, i);
         });
     }
 
@@ -30,5 +32,14 @@ export class GeometryService {
         const line = lineString(points);
         const distance = pointToLineDistance(point, line, { units: 'miles' });
         return distance <= this.distanceThreshold;
+    }
+
+    private isPointInBounds(bounds: { north: number, south: number, east: number, west: number }, point: number[]) {
+        const [pointLng, pointLat] = point;
+        return (
+            pointLat >= bounds.south &&
+            pointLat <= bounds.north &&
+            pointLng >= bounds.west &&
+            pointLng <= bounds.east);
     }
 }

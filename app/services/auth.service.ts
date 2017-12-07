@@ -8,7 +8,7 @@ export class AuthService {
   public userKey: string = '';
 
   constructor() {
-    this.setUserKey();
+    //this.setUserKey();
   }
 
   setUserKey() {

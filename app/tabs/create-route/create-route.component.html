@@ -4,13 +4,8 @@
     <TextField hint="Start Address" [(ngModel)]="model.startAddress"></TextField>
     <TextField hint="Destination Address" [(ngModel)]="model.endAddress"></TextField>
 
-    <Button class="btn btn-primary btn-active" text="Enter Start Time" (tap)="getStartTime()"></Button>
+    <Button class="btn btn-outline" text="Enter Start Time" (tap)="getStartTime()"></Button>
 
-    <Button class="btn btn-primary btn-active" text="Enter End Time" (tap)="getEndTime()"></Button>
-
-    <Label [text]='model.startAddress' class="m-15" textWrap="true"></Label>
-    <Label [text]='model.endAddress' class="m-15" textWrap="true"></Label>
-    <Label [text]='model.startTime | date:"hh:mm a"' class="m-15" textWrap="true"></Label>
-    <Label [text]='model.endTime | date:"hh:mm a"' class="m-15" textWrap="true"></Label>
+    <Button class="btn btn-outline" text="Enter End Time" (tap)="getEndTime()"></Button>
     <Button text="Create Route" class="btn btn-primary" (tap)="createRoute()"></Button>
 </StackLayout>

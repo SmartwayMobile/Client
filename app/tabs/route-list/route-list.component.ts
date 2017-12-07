@@ -20,9 +20,9 @@ export class RouteListComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.routesService.getUserByDeviceId()
-      .then(routes => {
-        this.routes = this.routesService.routes;
-      });
+    this.routesService.routes$.subscribe(routes => {
+      console.log('updating route-list');
+      this.routes = routes;
+    });
   }
 }

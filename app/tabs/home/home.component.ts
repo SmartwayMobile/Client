@@ -17,6 +17,9 @@ import {
 import { MapboxViewApi, Viewport as MapboxViewport, Mapbox, MapboxApi } from "nativescript-mapbox";
 import { OpenDataService } from "../services/open-data.service";
 import { GeometryService } from "../services/geometry.service";
+import { RoutesService } from "../../services/routes.service";
+import { Subject } from "rxjs/Subject";
+import { Route } from "../../models/Route";
 
 @Component({
     selector: "Home",
@@ -52,25 +55,29 @@ export class HomeComponent implements OnInit {
     private userRoutes: any[];
     private boundingBox: { north: number, south: number, east: number, west: number };
     private hasSetBoundingBox = false;
+    private userRoutes$: Subject<Route[]>
 
-    constructor(private openDataService: OpenDataService, private geoService: GeometryService) { }
+    constructor(
+        private openDataService: OpenDataService,
+        private geoService: GeometryService,
+        private routeService: RoutesService) {
+        this.userRoutes$ = this.routeService.routes$;
+    }
 
     ngOnInit(): void {
-        this.getUserRoutes().then(routes => {
-            this.boundingBox = this.geoService.getBoundsFromCoords(routes);
+        this.userRoutes$.subscribe(userRoutes => {
+            if (!userRoutes || !userRoutes.length) return;
+            const allCoords = [];
+            userRoutes.forEach(r => allCoords.push(r.startCoords, r.endCoords));
+            this.boundingBox = this.geoService.getBoundsFromCoords(allCoords);
             if (this.mapReady && this.map) {
                 this.setMapBounds(this.boundingBox);
             }
         });
     }
 
-    // TODO: Replace with real data plzzz kthxbye
-    getUserRoutes(): Promise<{ lat: number, lng: number }[]> {
-        const DUMMY_DATA = [{ lng: 35.8456, lat: -86.3903 }, { lng: 36.1627, lat: -86.7816 }];
-        return Promise.resolve(DUMMY_DATA);
-    }
-
     onMapReady(args): void {
+        debugger;
         if (this.mapReady) return;
 
         this.map = args.map;

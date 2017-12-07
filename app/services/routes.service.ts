@@ -3,20 +3,31 @@ import firebase = require("nativescript-plugin-firebase");
 import { AuthService } from './auth.service';
 import { Route } from '../models/Route';
 import { device } from 'platform';
-
+import { Observable } from 'rxjs/Observable';
+import { Subject } from 'rxjs/Subject';
+import { BehaviorSubject } from 'rxjs/BehaviorSubject';
 
 @Injectable()
 export class RoutesService {
 
   public routes: any[] = [];
+  public routes$: Subject<Route[]> = new BehaviorSubject<Route[]>([]);
   private uuid = device.uuid;
 
   constructor(private authService: AuthService) {
+    this.getUserByDeviceId();
   }
+
+  onRoutesChange = new Observable<Route>();
 
   getUserByDeviceId() {
     return firebase.getValue(`/users/${this.uuid}`)
       .then(results => {
+        if (!results.value) {
+          this.routes = [];
+          this.routes$.next(this.routes);
+          return this.routes$.asObservable();
+        }
         const routes = Object.keys(results.value.routes)
           .map(key => {
             const route = results.value.routes[key];
@@ -24,7 +35,8 @@ export class RoutesService {
             return route
           });
         this.routes = routes;
-        return this.routes;
+        this.routes$.next(this.routes);
+        return this.routes$.asObservable();
       });
   }
 
@@ -34,6 +46,7 @@ export class RoutesService {
       .then(pushResult => {
         route.id = pushResult.key;
         this.routes.push(route);
+        this.routes$.next(this.routes);
       });
   }
 

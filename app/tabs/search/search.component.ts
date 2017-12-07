@@ -3,6 +3,7 @@ import { OpenDataService } from "../services/open-data.service";
 import { GeometryService } from "../services/geometry.service";
 
 import { registerElement } from "nativescript-angular/element-registry";
+import { RoutesService } from "../../services/routes.service";
 registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
 
 @Component({
@@ -19,20 +20,33 @@ export class SearchComponent implements OnInit {
     cameras: any[] = [];
     cameraSelected: any;
 
-    constructor(private openDataService: OpenDataService, private geoService: GeometryService) { }
+    constructor(private openDataService: OpenDataService, private geoService: GeometryService, private routeService: RoutesService) { }
 
     ngOnInit(): void {
-        const cameraPromise = this.openDataService.getCameras();
-        const userRoutePromise = this.getUserRoutePromise();
-        Promise.all([cameraPromise, userRoutePromise])
-            .then(responses => {
-                const [cameras, routes] = responses;
-                const camerasInBounds = this.geoService.filterObjectsInBounds(cameras, routes, (camera) => {
-                    const coords = camera.location.coordinates[0];
-                    return [coords.lat, coords.lng];
+        // const cameraPromise = this.openDataService.getCameras();
+        // const userRoutePromise = this.getUserRoutePromise();
+        // Promise.all([cameraPromise, userRoutePromise])
+        //     .then(responses => {
+        //         const [cameras, routes] = responses;
+        //         const camerasInBounds = this.geoService.filterObjectsInBounds(cameras, routes, (camera) => {
+        //             const coords = camera.location.coordinates[0];
+        //             return [coords.lat, coords.lng];
+        //         });
+        //         this.cameras = camerasInBounds;
+        //         this.cameraSelected = this.cameras[0];
+        //     });
+        this.openDataService.getCameras()
+            .then(cameras => {
+                this.routeService.routes$.subscribe(userRoutes => {
+                    const allCoords = [];
+                    userRoutes.forEach(r => allCoords.push(r.startCoords, r.endCoords));
+                    const camerasInBounds = this.geoService.filterObjectsInBounds(cameras, allCoords, (camera) => {
+                        const coords = camera.location.coordinates[0];
+                        return [coords.lng, coords.lat];
+                    });
+                    this.cameras = camerasInBounds;
+                    this.cameraSelected = this.cameras[0];
                 });
-                this.cameras = camerasInBounds;
-                this.cameraSelected = this.cameras[0];
             });
     }
 
