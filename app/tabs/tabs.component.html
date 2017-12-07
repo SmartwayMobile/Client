@@ -13,7 +13,7 @@ http://docs.nativescript.org/angular/code-samples/ui/tab-view
     To add a new TabView item, add a new layout component with a tabItem Angular directive.
     Assign the tabItem directive an object that declares the tab item button's title and icon source.
     -->
-    <StackLayout *tabItem="{title: 'Map', iconSource: getIconSource('home')}">
+    <StackLayout *tabItem="{title: 'Map', iconSource: getIconSource('Map')}">
         <!--
         You can declare the layout and components of each view inside the TabView items directly.
         In this case the view contents and back end logic are separated in nested components.
@@ -21,10 +21,10 @@ http://docs.nativescript.org/angular/code-samples/ui/tab-view
         -->
         <Home></Home>
     </StackLayout>
-    <StackLayout *tabItem="{title: 'Routes', iconSource: getIconSource('browse')}">
+    <StackLayout *tabItem="{title: 'Routes', iconSource: getIconSource('Route2')}">
         <route-list></route-list>
     </StackLayout>
-    <StackLayout *tabItem="{title: 'Cameras', iconSource: getIconSource('search')}">
+    <StackLayout *tabItem="{title: 'Cameras', iconSource: getIconSource('Camera1')}">
         <Search></Search>
     </StackLayout>
 </TabView>
