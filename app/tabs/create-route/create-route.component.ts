@@ -12,6 +12,7 @@ import { Route } from '../../models/Route';
 import { AuthService } from "../../services/auth.service";
 import { RoutesService } from "../../services/routes.service";
 import { GeocodingService } from "../services/geocoding.service";
+import { TNSFancyAlert, TNSFancyAlertButton } from "nativescript-fancyalert";
 
 @Component({
   selector: "create-route",
@@ -98,7 +99,7 @@ export class CreateRouteComponent /*implements OnInit*/ {
   addRouteToFb() {
     this.routesService.addRoute(this.model)
       .then(result => {
-        console.dir(result);
+        TNSFancyAlert.showSuccess("Success", `${this.model.name} Added`, "Dismiss");
         this.routerExtensions.back();
       });
   }
