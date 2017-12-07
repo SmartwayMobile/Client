@@ -11,6 +11,7 @@ import { ModalViewComponent } from "./modal-view";
 import { Route } from '../../models/Route';
 import { AuthService } from "../../services/auth.service";
 import { RoutesService } from "../../services/routes.service";
+import { GeocodingService } from "../services/geocoding.service";
 
 @Component({
   selector: "create-route",
@@ -28,6 +29,7 @@ export class CreateRouteComponent /*implements OnInit*/ {
     private authService: AuthService,
     private routerExtensions: RouterExtensions,
     private modalService: ModalDialogService,
+    private geocodingService: GeocodingService,
     private vcRef: ViewContainerRef) {
     this.resetTimes();
     console.log('in create route');
@@ -80,31 +82,24 @@ export class CreateRouteComponent /*implements OnInit*/ {
   }
 
   createRoute(): void {
-    this.routesService.routes.push(
-      {
-        'name': this.model.name,
-        'startAddress': this.getLatLng(this.model.startAddress),
-        'endAddress': this.getLatLng(this.model.endAddress),
-        'startTime': this.model.startTime.getTime(),
-        'endTime': this.model.endTime.getTime(),
-        'days': [0, 1, 2, 3, 4, 5, 6]
-      });
-    const self = this;
-    console.log(this.model.startAddress);
-    console.log(this.model.endAddress);
-    console.log(this.model.startTime);
-    console.log(this.model.endTime);
-    firebase.update(
-      `/users/${this.authService.userKey}`,
-      {
-        'routes': this.routesService.routes
-      }
-    ).then(
-      function (result) {
+    const startPromise = this.geocodingService.getCoordsFromAddress(this.model.startAddress);
+    const destPromise = this.geocodingService.getCoordsFromAddress(this.model.endAddress);
+    Promise.all([startPromise, destPromise])
+      .then(res => {
+        const [start, dest] = res;
+        this.model.startAddress = start.results[0].formatted_address;
+        this.model.endAddress = dest.results[0].formatted_address;
+        this.model.startCoords = start.results[0].geometry.location;
+        this.model.endCoords = dest.results[0].geometry.location;
+
+      }).then(() => this.addRouteToFb());
+  }
+
+  addRouteToFb() {
+    this.routesService.addRoute(this.model)
+      .then(result => {
         console.dir(result);
-        self.routerExtensions.back();
-        //
-      }
-      );
+        this.routerExtensions.back();
+      });
   }
 }

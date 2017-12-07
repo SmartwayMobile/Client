@@ -15,6 +15,7 @@ import { GeometryService } from "./services/geometry.service";
 
 import { AuthService } from "../services/auth.service";
 import { RoutesService } from "../services/routes.service";
+import { GeocodingService } from "./services/geocoding.service";
 
 @NgModule({
     imports: [
@@ -34,6 +35,7 @@ import { RoutesService } from "../services/routes.service";
     providers: [
         OpenDataService,
         GeometryService,
+        GeocodingService,
         AuthService,
         RoutesService
     ],

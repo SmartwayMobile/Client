@@ -2,16 +2,41 @@ import { Injectable } from '@angular/core';
 import firebase = require("nativescript-plugin-firebase");
 import { AuthService } from './auth.service';
 import { Route } from '../models/Route';
+import { device } from 'platform';
 
 
 @Injectable()
 export class RoutesService {
 
   public routes: any[] = [];
+  private uuid = device.uuid;
 
   constructor(private authService: AuthService) {
-    this.getRoutes();
   }
+
+  getUserByDeviceId() {
+    return firebase.getValue(`/users/${this.uuid}`)
+      .then(results => {
+        const routes = Object.keys(results.value.routes)
+          .map(key => {
+            const route = results.value.routes[key];
+            route.id = key;
+            return route
+          });
+        this.routes = routes;
+        return this.routes;
+      });
+  }
+
+  addRoute(route: Route) {
+    const path = `/users/${this.uuid}/routes`;
+    return firebase.push(path, route)
+      .then(pushResult => {
+        route.id = pushResult.key;
+        this.routes.push(route);
+      });
+  }
+
   getRoutes() {
     let self = this;
     const onQueryEvent = (result) => {

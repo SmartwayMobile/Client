@@ -12,15 +12,17 @@ import { RoutesService } from "../../services/routes.service";
   styleUrls: ['./route-list.component.css']
 })
 export class RouteListComponent implements OnInit {
-  public routes: Route[];
+  public routes: Route[] = [];
 
   constructor(
     private authService: AuthService,
     private routesService: RoutesService) {
-    this.routes = [];
   }
 
   ngOnInit() {
-    this.routes = this.routesService.routes;
+    this.routesService.getUserByDeviceId()
+      .then(routes => {
+        this.routes = this.routesService.routes;
+      });
   }
 }
