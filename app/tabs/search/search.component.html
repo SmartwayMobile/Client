@@ -10,7 +10,7 @@ Feel free to customize layouts and components to change how the tab view looks.
     <ListView [items]="cameras" (itemTap)="onCameraSelect($event)" row="1">
         <ng-template let-item="item" let-i="index" let-odd="odd" let-even="even">
             <GridLayout columns="60, *" class="camera-item">
-                <Image src="res://tabIcons/search.png" col="0" class="camera-image"></Image>
+                <Image src="res://tabIcons/Camera1.png" col="0" class="camera-image"></Image>
                 <StackLayout [class.odd]="odd" [class.even]="even" col="1">
                     <Label class="h3" [text]='item.route'></Label>
                     <Label class="h5" [text]='item.title'></Label>
