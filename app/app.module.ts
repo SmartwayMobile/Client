@@ -21,7 +21,7 @@ firebase.init({
         console.log("Firebase push token: " + token);
     },
     onMessageReceivedCallback: (message: any) => {
-        alert(message.body);
+        alert(message.data.msg);
         console.log(`Title: ${message.title}`);
         console.log(`Body: ${message.body}`);
         // if your server passed a custom property called 'foo', then do this:
@@ -29,6 +29,10 @@ firebase.init({
     }
 }).then(
     (instance) => {
+        firebase.getCurrentPushToken().then((token: string) => {
+            // may be null if not known yet
+            console.log("Current push token: " + token);
+        });
         console.log("firebase.init done");
     },
     (error) => {
