@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "447028541675",
+    "firebase_url": "https://smartway-mobile-1512405241266.firebaseio.com",
+    "project_id": "smartway-mobile-1512405241266",
+    "storage_bucket": "smartway-mobile-1512405241266.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:447028541675:android:2cb0797080ead774",
+        "android_client_info": {
+          "package_name": "org.nativescript.NativeScriptMobileClient"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "447028541675-gbmekkpduqc4unam59re7kbotheq5kdh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCuf8wqHAuyw3RJgZt3Iu5VDVSIhh1CHbQ"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -17,7 +17,16 @@ registerElement("FAB", () => require("nativescript-floatingactionbutton").Fab);
 
 import firebase = require("nativescript-plugin-firebase");
 firebase.init({
-    //persist: true
+    onPushTokenReceivedCallback: function (token) {
+        console.log("Firebase push token: " + token);
+    },
+    onMessageReceivedCallback: (message: any) => {
+        alert(message.body);
+        console.log(`Title: ${message.title}`);
+        console.log(`Body: ${message.body}`);
+        // if your server passed a custom property called 'foo', then do this:
+        console.log(`Value of 'foo': ${message.data.foo}`);
+    }
 }).then(
     (instance) => {
         console.log("firebase.init done");
