@@ -1,8 +1,6 @@
-<GridLayout rows="40, auto">
-  <StackLayout row="0">
-    <Button class="btn" text="Create Route" [nsRouterLink]="['/tabs/routes/create']"></Button>
-  </StackLayout>
-  <ListView textWrap="true" [items]="routes" (itemTap)="onItemTap($event)" class="list-group" row="1">
+<StackLayout>
+  <Button class="btn create-route" text="Create New Route" [nsRouterLink]="['/tabs/routes/create']"></Button>
+  <ListView textWrap="true" [items]="routes" (itemTap)="onItemTap($event)" class="list-group">
     <ng-template tkListItemTemplate let-item="item">
       <StackLayout orientation="vertical" class="route-item">
         <Label paddingLeft="15" paddingTop="5" class="nameLabel" [text]="item.name"></Label>
@@ -11,4 +9,4 @@
       </StackLayout>
     </ng-template>
   </ListView>
-</GridLayout>
+</StackLayout>
