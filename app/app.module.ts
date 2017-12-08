@@ -3,7 +3,7 @@ import { NativeScriptFormsModule } from "nativescript-angular/forms";
 import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { NSModuleFactoryLoader } from "nativescript-angular/router";
 
-import { NativeScriptUISideDrawerModule } from "nativescript-pro-ui/sidedrawer/angular";
+import { NativeScriptUIListViewModule } from "nativescript-pro-ui/listview/angular";
 
 import { AppRoutingModule } from "./app-routing.module";
 import { AppComponent } from "./app.component";
@@ -13,7 +13,7 @@ import { AuthGuard } from "./guards/auth.guard";
 
 import { registerElement } from "nativescript-angular/element-registry";
 registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
-registerElement("FAB", () => require("nativescript-floatingactionbutton").Fab);
+// registerElement("FAB", () => require("nativescript-floatingactionbutton").Fab);
 
 import firebase = require("nativescript-plugin-firebase");
 firebase.init({
@@ -34,7 +34,7 @@ firebase.init({
         NativeScriptModule,
         NativeScriptFormsModule,
         AppRoutingModule,
-        NativeScriptUISideDrawerModule
+        NativeScriptUIListViewModule
     ],
     declarations: [
         AppComponent,

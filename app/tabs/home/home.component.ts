@@ -1,4 +1,5 @@
 import { Component, ViewContainerRef, OnInit } from "@angular/core";
+import { isIOS } from 'platform';
 import {
     trigger,
     state,
@@ -128,21 +129,31 @@ export class HomeComponent implements OnInit {
     }
 
     private onMarkerTap(marker): void {
-        const options: DialogOptions = {
-            dialogStyle: CFAlertStyle.BOTTOM_SHEET,
-            title: marker.impactDescription,
-            titleColor: "#4781FE",
-            message: marker.description,
-            buttons: [{
-                text: "Dismiss",
-                textColor: "#FFFFFF",
-                backgroundColor: "#4781FE",
-                buttonStyle: CFAlertActionStyle.POSITIVE,
-                onClick: function (name) { }
-            }],
-            cancellable: true
-        }
+        if (!isIOS) {
+            let options = {
+                title: "Race selection",
+                message: "Race chosen: Unicorn",
+                okButtonText: "OK"
+            };
 
-        this.cfalertDialog.show(options);
+            alert(options);
+        } else {
+            let options: DialogOptions = {
+                dialogStyle: CFAlertStyle.BOTTOM_SHEET,
+                title: marker.impactDescription,
+                titleColor: "#4781FE",
+                message: marker.description,
+                buttons: [{
+                    text: "Dismiss",
+                    textColor: "#FFFFFF",
+                    backgroundColor: "#4781FE",
+                    buttonStyle: CFAlertActionStyle.POSITIVE,
+                    onClick: function (name) { }
+                }],
+                cancellable: true
+            }
+
+            this.cfalertDialog.show(options);
+        }
     }
 }

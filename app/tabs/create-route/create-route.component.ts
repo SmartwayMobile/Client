@@ -83,6 +83,7 @@ export class CreateRouteComponent /*implements OnInit*/ {
   }
 
   createRoute(): void {
+    debugger;
     const startPromise = this.geocodingService.getCoordsFromAddress(this.model.startAddress);
     const destPromise = this.geocodingService.getCoordsFromAddress(this.model.endAddress);
     Promise.all([startPromise, destPromise])
