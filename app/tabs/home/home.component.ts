@@ -77,7 +77,6 @@ export class HomeComponent implements OnInit {
     }
 
     onMapReady(args): void {
-        debugger;
         if (this.mapReady) return;
 
         this.map = args.map;
